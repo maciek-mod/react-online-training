@@ -3,4 +3,18 @@ import ReactDOM from 'react-dom';
 
 import events from './data/events.json';
 
-ReactDOM.render(<p>Your App goes here....</p>, document.getElementById('root'));
+const element = (
+  <div>
+    {events.map(item => {
+      return (
+          <li key={item.name}>{item.name} <br/>
+            <strong>{item.date}</strong> <br/>
+            {item.place}
+          </li>
+      );
+    })}
+  </div>
+);
+// console.log(events);
+
+ReactDOM.render(<ul>{element}</ul>, document.getElementById('root'));
