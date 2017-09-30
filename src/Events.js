@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // const Events = (props) => {
 //     return(
@@ -21,8 +22,12 @@ import React from 'react';
 
 
 class Events extends React.Component {
+    static propTypes = {
+       events: PropTypes.array.isRequired
+    };
+
   render() {
-      
+
     return <ul className="first">
         {this.props.events.map(item => {
             const date = new Date(item.date);
@@ -39,6 +44,7 @@ class Events extends React.Component {
     </ul>
 
   }
+
 }
 
 
