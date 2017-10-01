@@ -31,6 +31,7 @@ class Events extends React.Component {
     constructor(props) {
       super(props);
       this.state = { events: []};
+      this.onCleanList = this.onCleanList.bind(this);
     }
 
     componentDidMount() {
@@ -39,27 +40,41 @@ class Events extends React.Component {
         });
     }
 
+    onCleanList(event) {
+       event.preventDefault();
+       this.setState({
+           events: []
+       });
+    }
+
   render() {
 
     return (
-        <ul>
-            {this.state.events.map(item => {
-                const date = new Date(item.date);
-                if (date >= Date.now()) {
-                  return (
-                          <li key={item.id}>
-                          <strong>{item.name}</strong>  <br/>
-                            Data - {item.date}<br/>
-                            Miejsce - {item.place}
-                          </li>
-                  );
-              }
-              return null;
-            })}
-        </ul>
+        <div>
+            <ul>
+                {this.state.events.map(item => {
+                    const date = new Date(item.date);
+                    if (date >= Date.now()) {
+                      return (
+                              <li key={item.id}>
+                              <strong>{item.name}</strong>  <br/>
+                                Data - {item.date}<br/>
+                                Miejsce - {item.place}
+                              </li>
+                      );
+                  }
+                  return null;
+                })}
+
+            </ul>
+            <button href="/" onClick={this.onCleanList}>
+                czyszczenie!!!
+            </button>
+        </div>
     );
 
   }
+
 
 }
 
