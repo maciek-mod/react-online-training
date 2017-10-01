@@ -1,5 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import events from './data/events.json';
+
+// import PropTypes from 'prop-types';
 
 // const Events = (props) => {
 //     return(
@@ -22,15 +24,26 @@ import PropTypes from 'prop-types';
 
 
 class Events extends React.Component {
-    static propTypes = {
-       events: PropTypes.array.isRequired
-    };
+    // static propTypes = {
+    //    events: PropTypes.array.isRequired
+    // };
+
+    constructor(props) {
+      super(props);
+      this.state = { events: []};
+    }
+
+    componentDidMount() {
+        this.setState({
+            events
+        });
+    }
 
   render() {
 
     return (
         <ul>
-            {this.props.events.map(item => {
+            {this.state.events.map(item => {
                 const date = new Date(item.date);
                 if (date >= Date.now()) {
                   return (
