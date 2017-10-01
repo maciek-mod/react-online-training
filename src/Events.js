@@ -1,37 +1,14 @@
 import React from 'react';
 import events from './data/events.json';
 
-// import PropTypes from 'prop-types';
-
-// const Events = (props) => {
-//     return(
-//         <ul className="first">
-//             {props.events.map(item => {
-//                 const date = new Date(item.date);
-//                 if (date >= Date.now()) {
-//                   return (
-//                           <li key={item.name}>{item.name} <br/>
-//                             <strong>Data - {item.date}</strong> <br/>
-//                             Miejsce - {item.place}
-//                           </li>
-//                   );
-//               }
-//               return null;
-//             })}
-//         </ul>
-//     );
-// }
-
-
 class Events extends React.Component {
-    // static propTypes = {
-    //    events: PropTypes.array.isRequired
-    // };
+
 
     constructor(props) {
       super(props);
       this.state = { events: []};
       this.onCleanList = this.onCleanList.bind(this);
+
     }
 
     componentDidMount() {
@@ -47,6 +24,14 @@ class Events extends React.Component {
        });
     }
 
+    onDeleteItems(itemId, event) {
+       event.preventDefault();
+       const filterArray = this.state.events.filter(item => item.id !== itemId);
+       this.setState({
+           events: filterArray
+       })
+    }
+
   render() {
 
     return (
@@ -59,7 +44,9 @@ class Events extends React.Component {
                               <li key={item.id}>
                               <strong>{item.name}</strong>  <br/>
                                 Data - {item.date}<br/>
-                                Miejsce - {item.place}
+                                Miejsce - {item.place} <br/>
+                                <button onClick={this.onDeleteItems.bind(this, item.id)}>Usuń</button>
+
                               </li>
                       );
                   }
@@ -67,7 +54,7 @@ class Events extends React.Component {
                 })}
 
             </ul>
-            <button href="/" onClick={this.onCleanList}>
+            <button  onClick={this.onCleanList}>
                 czyszczenie!!!
             </button>
         </div>
