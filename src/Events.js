@@ -1,13 +1,15 @@
 import React from 'react';
 import events from './data/events.json';
+import EventItem from './EventsItem.js';
+
 
 class Events extends React.Component {
-
 
     constructor(props) {
       super(props);
       this.state = { events: []};
       this.onCleanList = this.onCleanList.bind(this);
+      this.onShowAll = this.onShowAll.bind(this);
 
     }
 
@@ -32,6 +34,13 @@ class Events extends React.Component {
        })
     }
 
+    onShowAll(event) {
+        event.preventDefault();
+        this.setState({
+            events
+        })
+    }
+
   render() {
 
     return (
@@ -40,22 +49,17 @@ class Events extends React.Component {
                 {this.state.events.map(item => {
                     const date = new Date(item.date);
                     if (date >= Date.now()) {
-                      return (
-                              <li key={item.id}>
-                              <strong>{item.name}</strong>  <br/>
-                                Data - {item.date}<br/>
-                                Miejsce - {item.place} <br/>
-                                <button onClick={this.onDeleteItems.bind(this, item.id)}>Usuń</button>
-
-                              </li>
-                      );
+                      return <EventItem item={item} onDeleteItems={this.onDeleteItems.bind(this)} />
                   }
                   return null;
                 })}
 
             </ul>
-            <button  onClick={this.onCleanList}>
+            <button onClick={this.onCleanList}>
                 czyszczenie!!!
+            </button> <br/><br/>
+            <button onClick={this.onShowAll}>
+                Show all
             </button>
         </div>
     );
