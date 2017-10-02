@@ -49,7 +49,7 @@ class Events extends React.Component {
                 {this.state.events.map(item => {
                     const date = new Date(item.date);
                     if (date >= Date.now()) {
-                      return <EventItem item={item} onDeleteItems={this.onDeleteItems.bind(this)} />
+                      return (<EventItem item={item} key={item.id} onDeleteItems={this.onDeleteItems.bind(this)} />);
                   }
                   return null;
                 })}
