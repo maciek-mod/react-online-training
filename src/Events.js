@@ -1,11 +1,10 @@
 import React from 'react';
-import events from './data/events.json';
+// import events from './data/events.json';
+import fetch from "isomorphic-fetch";
 import EventItem from './EventsItem.js';
 import EventFilter from './EventFilters.js';
 import EventAdd from './EventAdd.js';
-
-
-
+import Loader from './common/Loader.js';
 
 class Events extends React.Component {
 
@@ -13,6 +12,7 @@ class Events extends React.Component {
       super(props);
       this.state = {
           events: [],
+          isLoading: true,
           filter: '',
           newName: '',
           newNameValid: false,
@@ -30,9 +30,14 @@ class Events extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            events
-        });
+            fetch('//frontendinsights.com/events.json')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    events: data,
+                    isLoading: false
+                });
+            })
     }
 
     onCleanList(event) {
@@ -52,8 +57,12 @@ class Events extends React.Component {
 
     onShowAll(event) {
         event.preventDefault();
-        this.setState({
-            events
+        fetch('//frontendinsights.com/events.json')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({
+                events: data
+            });
         })
     }
     onFilterChange(event){
@@ -107,16 +116,19 @@ class Events extends React.Component {
     return (
         <div>
             <EventFilter filter={this.state.filter} onFilterChange={this.onFilterChange.bind(this)} />
-            <ul>
-                {this.state.events.map(item => {
-                    const date = new Date(item.date);
-                    if (date >= Date.now() && item.name.indexOf(this.state.filter) > -1) {
-                      return (<EventItem item={item} key={item.id} onDeleteItems={this.onDeleteItems.bind(this)} />);
-                  }
-                  return null;
-                })}
 
-            </ul>
+            <Loader isLoading={this.state.isLoading}>
+                <ul>
+                    {this.state.events.map(item => {
+                        const date = new Date(item.date);
+                        if (date >= Date.now() && item.name.indexOf(this.state.filter) > -1) {
+                          return (<EventItem item={item} key={item.id} onDeleteItems={this.onDeleteItems.bind(this)} />);
+                      }
+                      return null;
+                    })}
+
+                </ul>
+            </Loader>
 
             <button onClick={this.onCleanList}>
                 czyszczenie!!!
