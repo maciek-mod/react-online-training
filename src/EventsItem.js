@@ -6,6 +6,7 @@ const EventItem = (props) => {
             <strong>{props.item.name}</strong>  <br/>
             Data - {props.item.date}<br/>
             Miejsce - {props.item.place} <br/>
+            Godzina - {props.item.time} <br/>
             <button onClick={props.onDeleteItems.bind(this, props.item.id)}>Usuń</button>
         </li>
   );
