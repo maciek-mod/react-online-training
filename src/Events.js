@@ -15,9 +15,14 @@ class Events extends React.Component {
           events: [],
           filter: '',
           newName: '',
+          newNameValid: false,
           newPlace: '',
+          newPlaceValid: false,
           newDate: '',
-          newTime: ''
+          newDateValid: false,
+          newTime: '',
+          newTimeValid: false
+
       };
       this.onCleanList = this.onCleanList.bind(this);
       this.onShowAll = this.onShowAll.bind(this);
@@ -58,27 +63,12 @@ class Events extends React.Component {
         })
     }
 
-    onNameChange(event){
-        this.setState({
-            newName: event.currentTarget.value
-        });
-    }
 
-    onPlaceChange(event){
+    onFieldChange(field, event){
+        const value = event.currentTarget.value;
         this.setState({
-            newPlace: event.currentTarget.value
-        });
-    }
-
-    onDateChange(event){
-        this.setState({
-            newDate: event.currentTarget.value
-        });
-    }
-
-    onTimeChange(event){
-        this.setState({
-            newTime: event.currentTarget.value
+            [field]: value,
+            [field + 'Valid']: value.length > 0
         });
     }
 
@@ -89,23 +79,27 @@ class Events extends React.Component {
             newName,
             newPlace,
             newDate,
-            newTime
+            newTime,
+            newNameValid,
+            newPlaceValid,
+            newDateValid,
+            newTimeValid
         } = this.state;
 
         const maxId = Math.max(...events.map(item => item.id));
-        
+
         events.push({
             id: maxId + 1,
             name: newName,
             place: newPlace,
             date: newDate,
-            time: newTime
+            time: newTime,
         });
-
-        this.setState({
-            events
-        });
-
+        if (newNameValid && newPlaceValid && newDateValid && newTimeValid) {
+            this.setState({
+                events
+            });
+        }
     }
 
   render() {
@@ -135,10 +129,11 @@ class Events extends React.Component {
                 place={this.state.newPlace}
                 date={this.state.newDate}
                 time={this.state.newTime}
-                onNameChange={this.onNameChange.bind(this)}
-                onPlaceChange={this.onPlaceChange.bind(this)}
-                onDateChange={this.onDateChange.bind(this)}
-                onTimeChange={this.onTimeChange.bind(this)}
+                nameValid={this.state.newNameValid}
+                placeValid={this.state.newPlaceValid}
+                dateValid={this.state.newDateValid}
+                timeValid={this.state.newTimeValid}
+                onFieldChange={this.onFieldChange.bind(this)}
                 onFormSubmit={this.onFormSubmit.bind(this)}
             />
         </div>
